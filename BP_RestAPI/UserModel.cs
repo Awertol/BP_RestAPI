@@ -3,7 +3,8 @@
     public class UserModel : UserBase
     {
         public int Id { get; set; }
-        public string? FullName { get; set; }
+        public string? Firstname { get; set; }
+        public string? Surname { get; set; }
         public int? ChosenClassID { get; set; }
         public int isTeacher { get; set; }
         public int BronzeMedals { get; set; }

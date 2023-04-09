@@ -96,7 +96,7 @@ namespace BP_RestAPI
             {
                 return NotFound();
             }
-            if(newAvatar > 0 && newAvatar < 8)
+            if(newAvatar > 0 && newAvatar < 7)
             {
                 UserModel.Avatar = newAvatar;
             }
@@ -134,15 +134,28 @@ namespace BP_RestAPI
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
-        [HttpPost("/user/UpdateNickname/{id}/{newFullname}")]
-        public async Task<ActionResult<UserModel>> PostUpdateFullname(int id, string newFullname)
+        [HttpPost("/user/UpdateFirstname/{id}/{newFirstname}")]
+        public async Task<ActionResult<UserModel>> PostUpdateFirstname(int id, string newFirstname)
         {
             var UserModel = await _dbContext.Users.FindAsync(id);
             if (UserModel == null)
             {
                 return NotFound();
             }
-            UserModel.FullName = newFullname;
+            UserModel.Firstname = newFirstname;
+            _dbContext.Users.Update(UserModel);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost("/user/UpdateSurname/{id}/{newSurname}")]
+        public async Task<ActionResult<UserModel>> PostUpdateSurname(int id, string newSurname)
+        {
+            var UserModel = await _dbContext.Users.FindAsync(id);
+            if (UserModel == null)
+            {
+                return NotFound();
+            }
+            UserModel.Surname = newSurname;
             _dbContext.Users.Update(UserModel);
             await _dbContext.SaveChangesAsync();
             return Ok();

@@ -10,5 +10,8 @@ namespace BP_RestAPI
         }
 
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<ExamsModel> Exams { get; set; }
+        public DbSet<ExamAnswersModel> ExamAnswers { get; set; }
+        public DbSet<ClassModel> Classes { get; set; }
     }
 }

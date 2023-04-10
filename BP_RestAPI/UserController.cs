@@ -31,27 +31,18 @@ namespace BP_RestAPI
             return UserModel;
         }
 
-        [HttpGet("/secret")]
-        public async Task<ActionResult<UserModel>> Post(UserModel UserModel)
+        [HttpGet("/user/LoginUser/{username}/{password}")]
+        public async Task<ActionResult<UserModel>> LoginUser(string username, string password)
         {
-            _dbContext.Users.Add(UserModel);
-            await _dbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = UserModel.Id }, UserModel);
-        }
-
-        [HttpPost("/user/{id}")]
-        public async Task<ActionResult<UserModel>> Get(int id)
-        {
-            var UserModel = await _dbContext.Users.FindAsync(id);
+            var UserModel = await _dbContext.Users.FirstOrDefaultAsync(x => x.Nickname == username && x.UserPassword == password);
             if (UserModel == null)
             {
                 return NotFound();
             }
-            UserModel.UserPassword = "#####";
-            return UserModel;
+            return Ok(UserModel);
         }
 
-        [HttpPost("/user/")]
+        [HttpPost("/user/RegisterUser")]
         public async Task<ActionResult<UserModel>> PostNew(UserBase UserBase)
         {
             UserModel userModel = new UserModel();
@@ -156,6 +147,53 @@ namespace BP_RestAPI
                 return NotFound();
             }
             UserModel.Surname = newSurname;
+            _dbContext.Users.Update(UserModel);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost("/user/UpdatePassword/{id}/{newPassword}")]
+        public async Task<ActionResult<UserModel>> PostUpdatePassword(int id, string newPassword)
+        {
+            var UserModel = await _dbContext.Users.FindAsync(id);
+            if (UserModel == null)
+            {
+                return NotFound();
+            }
+            UserModel.UserPassword = newPassword;
+            _dbContext.Users.Update(UserModel);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost("/user/UpdateTitle/{id}/{titleNo}")]
+        public async Task<ActionResult<UserModel>> PostUpdateTitle(int id, int titleNo)
+        {
+            var UserModel = await _dbContext.Users.FindAsync(id);
+            if (UserModel == null)
+            {
+                return NotFound();
+            }
+            switch(titleNo)
+            {
+                case 1:
+                    UserModel.Title1 = 1;
+                    break;
+                case 2:
+                    UserModel.Title2 = 1;
+                    break;
+                case 3:
+                    UserModel.Title3 = 1;
+                    break;
+                case 4:
+                    UserModel.Title4 = 1;
+                    break;
+                case 5:
+                    UserModel.Title5 = 1;
+                    break;
+                case 6:
+                    UserModel.Title6 = 1;
+                    break;
+                default: return BadRequest();
+            }
             _dbContext.Users.Update(UserModel);
             await _dbContext.SaveChangesAsync();
             return Ok();

@@ -11,5 +11,11 @@
         public int SilverMedals { get; set; }
         public int GoldMedals { get; set; }
         public int Avatar { get; set; }
+        public int Title1 { get; set; }
+        public int Title2 { get; set; }
+        public int Title3 { get; set; }
+        public int Title4 { get; set; }
+        public int Title5 { get; set; }
+        public int Title6 { get; set; }
     }
 }

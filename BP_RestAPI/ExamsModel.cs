@@ -1,11 +1,14 @@
-﻿namespace BP_RestAPI
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BP_RestAPI
 {
     public class ExamsModel
     {
+        [Key]
         public int Id { get; set; }
         public int ClassID { get; set; }
         public int TeacherID { get; set; }
-        public string? Name { get; set; }
+        public string? ExamName { get; set; }
         public string PIN { get; set; }
         public DateTime Creation { get; set; }
         public string Problem1 { get; set; }

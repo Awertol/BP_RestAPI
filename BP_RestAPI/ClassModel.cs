@@ -1,7 +1,10 @@
-﻿namespace BP_RestAPI
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BP_RestAPI
 {
     public class ClassModel
     {
+        [Key]
         public int Id { get; set; }
         public int TeacherId { get; set; }
         public string? Region { get; set; }

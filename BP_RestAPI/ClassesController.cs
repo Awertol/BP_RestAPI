@@ -20,7 +20,7 @@ namespace BP_RestAPI
             return await _dbContext.Classes.ToListAsync();
         }
         [HttpGet("/class/Find/{id}")]
-        public async Task<ActionResult<ClassModel>> GetSecret(int id)
+        public async Task<ActionResult<ClassModel>> GetClass(int id)
         {
             var ClassModel = await _dbContext.Classes.FindAsync(id);
             if (ClassModel == null)
@@ -29,7 +29,17 @@ namespace BP_RestAPI
             }
             return ClassModel;
         }
-        [HttpPost("/class/Create/{IdTeacher}/{Region}/{District}/{City}/{Name}/{Grade}")]
+        [HttpGet("/class/Find/{name}")]
+        public async Task<ActionResult<ClassModel>> GetClassByName(string name, string grade)
+        {
+            var ClassModel = await _dbContext.Classes.FirstOrDefaultAsync(x => x.SchoolName == name && x.Grade == Convert.ToInt32(grade));
+            if (ClassModel == null)
+            {
+                return NotFound();
+            }
+            return ClassModel;
+        }
+        [HttpPost("/class/Create/")]
         public async Task<ActionResult<ClassModel>> CreateOwnClass(ClassModel addedClass)
         {
             _dbContext.Classes.Add(addedClass);
@@ -39,7 +49,7 @@ namespace BP_RestAPI
         [HttpDelete("/class/Delete/{Name}/{Grade}")]
         public async Task<ActionResult<ClassModel>> DeleteClass(string name, string grade)
         {
-            var deletedClass = await _dbContext.Classes.FirstOrDefaultAsync(x => x.Name == name && x.Grade == Convert.ToInt32(grade));
+            var deletedClass = await _dbContext.Classes.FirstOrDefaultAsync(x => x.SchoolName == name && x.Grade == Convert.ToInt32(grade));
             if(deletedClass == null)
             {
                 return NotFound();

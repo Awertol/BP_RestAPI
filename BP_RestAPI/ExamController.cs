@@ -30,7 +30,7 @@ namespace BP_RestAPI
             }
             return ExamModel;
         }
-        [HttpPost("/exam/CreateOwn/")]
+        [HttpPost("/exam/Create/")]
         public async Task<ActionResult<ExamsModel>> CreateOwnExam(ExamsModel exam)
         {
             _dbContext.Exams.Add(exam);
@@ -38,16 +38,6 @@ namespace BP_RestAPI
             return CreatedAtAction(nameof(Get), new { id = exam.Id }, exam);
         }
 
-        [HttpPost("/exam/CreateGen/{username}/{password}")]
-        public async Task<ActionResult<ExamsModel>> CreateGenExam(string username, string password)
-        {
-            var UserModel = await _dbContext.Users.FirstOrDefaultAsync(x => x.Nickname == username && x.UserPassword == password);
-            if (UserModel == null)
-            {
-                return NotFound();
-            }
-            return Ok(UserModel);
-        }
 
         [HttpPost("/exam/RegisterUser")]
         public async Task<ActionResult<UserModel>> PostNew(UserBase UserBase)

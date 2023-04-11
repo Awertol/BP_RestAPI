@@ -20,10 +20,10 @@ namespace BP_RestAPI
             return await _dbContext.ExamSets.ToListAsync();
         }
 
-        [HttpGet("/exam/Find/{id}")]
-        public async Task<ActionResult<ExamsModel>> GetSecret(int id)
+        [HttpGet("/exam/Find/{pin}/{classId}")]
+        public async Task<ActionResult<ExamsModel>> GetSecret(string pin, int classId)
         {
-            var ExamModel = await _dbContext.ExamSets.FindAsync(id);
+            var ExamModel = await _dbContext.ExamSets.FirstOrDefaultAsync(x => x.PIN == pin && x.ClassID == classId);
             if (ExamModel == null)
             {
                 return NotFound();

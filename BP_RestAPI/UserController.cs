@@ -41,6 +41,16 @@ namespace BP_RestAPI
             }
             return Ok(UserModel);
         }
+        [HttpGet("/user/FindClassmates/{classId}/")]
+        public async Task<ActionResult<UserModel>> FindClassmates(int classId)
+        {
+            var UsersModel = _dbContext.Users.Where(x => x.ChosenClassID == classId);
+            if (UsersModel == null)
+            {
+                return NotFound();
+            }
+            return Ok(UsersModel);
+        }
 
         [HttpPost("/user/RegisterUser")]
         public async Task<ActionResult<UserModel>> PostNew(UserBase UserBase)
@@ -80,16 +90,17 @@ namespace BP_RestAPI
             return Ok();
         }
         [HttpPost("/user/UpdateAvatar/{id}/{newAvatar}")]
-        public async Task<ActionResult<UserModel>> PostUpdateAvatar(int id, int newAvatar)
+        public async Task<ActionResult<UserModel>> PostUpdateAvatar(int id, string newAvatar)
         {
             var UserModel = await _dbContext.Users.FindAsync(id);
             if (UserModel == null)
             {
                 return NotFound();
             }
-            if(newAvatar > 0 && newAvatar < 7)
+            int avatar = Convert.ToInt32(newAvatar);
+            if(avatar > 0 && avatar < 7)
             {
-                UserModel.Avatar = newAvatar;
+                UserModel.Avatar = avatar;
             }
             else
             {
@@ -164,6 +175,20 @@ namespace BP_RestAPI
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
+        [HttpPost("/user/UpdateSchool/{id}/{schoolname}/{grade}")]
+        public async Task<ActionResult<UserModel>> PostUpdatePassword(int id, string schoolName, int grade)
+        {
+            var UserModel = await _dbContext.Users.FindAsync(id);
+            var ClassModel = await _dbContext.Classes.FirstOrDefaultAsync(x=>x.SchoolName == schoolName && x.Grade == grade);
+            if (UserModel == null || ClassModel == null)
+            {
+                return NotFound();
+            }
+            UserModel.ChosenClassID = ClassModel.Id;
+            _dbContext.Users.Update(UserModel);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
         [HttpPost("/user/UpdateTitle/{id}/{titleNo}")]
         public async Task<ActionResult<UserModel>> PostUpdateTitle(int id, int titleNo)
         {
@@ -194,6 +219,20 @@ namespace BP_RestAPI
                     break;
                 default: return BadRequest();
             }
+            _dbContext.Users.Update(UserModel);
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("/user/SetTitle/{id}/{titleNo}")]
+        public async Task<ActionResult<UserModel>> PostSetTitle(int id, int titleNo)
+        {
+            var UserModel = await _dbContext.Users.FindAsync(id);
+            if (UserModel == null)
+            {
+                return NotFound();
+            }
+            UserModel.ChosenTitle = titleNo;
             _dbContext.Users.Update(UserModel);
             await _dbContext.SaveChangesAsync();
             return Ok();

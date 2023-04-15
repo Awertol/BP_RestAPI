@@ -17,5 +17,6 @@
         public int Title4 { get; set; }
         public int Title5 { get; set; }
         public int Title6 { get; set; }
+        public int ChosenTitle { get; set; }
     }
 }

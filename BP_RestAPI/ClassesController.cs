@@ -22,12 +22,22 @@ namespace BP_RestAPI
         [HttpGet("/class/Find/{id}")]
         public async Task<ActionResult<ClassModel>> GetClass(int id)
         {
-            var ClassModel = await _dbContext.Classes.FindAsync(id);
+            var ClassModel = await _dbContext.Classes.FirstOrDefaultAsync(x => x.Id == id);
             if (ClassModel == null)
             {
                 return NotFound();
             }
             return ClassModel;
+        }
+        [HttpGet("/class/Find/{region}/{district}/{city}")]
+        public async Task<ActionResult<ClassModel>> GetClassInCity(string region, string district, string city)
+        {
+            var ClassModel = _dbContext.Classes.Where(x => x.Region == region && x.District == district && x.City == city);
+            if (ClassModel == null)
+            {
+                return NotFound();
+            }
+            return Ok(ClassModel);
         }
         [HttpGet("/class/FindByName/{name}/{grade}")]
         public async Task<ActionResult<ClassModel>> GetClassByName(string name, int grade)
@@ -38,6 +48,16 @@ namespace BP_RestAPI
                 return NotFound();
             }
             return ClassModel;
+        }
+        [HttpGet("/class/FindCities/{region}/{district}/")]
+        public async Task<ActionResult<ClassModel>> GetClassBy(string region, string district)
+        {
+            var ClassModel =_dbContext.Classes.Where(x => x.Region == region.Trim() && x.District == district);
+            if (ClassModel == null)
+            {
+                return NotFound();
+            }
+            return Ok(ClassModel);
         }
         [HttpPost("/class/Create/")]
         public async Task<ActionResult<ClassModel>> CreateOwnClass(ClassModel addedClass)

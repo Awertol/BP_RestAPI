@@ -49,10 +49,10 @@ namespace BP_RestAPI
             }
             return ClassModel;
         }
-        [HttpGet("/class/FindCities/{region}/{district}/")]
-        public async Task<ActionResult<ClassModel>> GetClassBy(string region, string district)
+        [HttpGet("/class/FindCities/")]
+        public async Task<ActionResult<ClassModel>> GetClassBy()
         {
-            var ClassModel =_dbContext.Classes.Where(x => x.Region == region.Trim() && x.District == district);
+            var ClassModel =_dbContext.Classes.Where(x => x.Grade >= 1 && x.Grade <= 3);
             if (ClassModel == null)
             {
                 return NotFound();

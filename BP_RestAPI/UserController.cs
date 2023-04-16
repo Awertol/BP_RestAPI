@@ -58,6 +58,7 @@ namespace BP_RestAPI
             UserModel userModel = new UserModel();
             userModel.Nickname = UserBase.Nickname;
             userModel.UserPassword = UserBase.UserPassword;
+            userModel.Avatar = 1;
             _dbContext.Users.Add(userModel);
             await _dbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = userModel.Id }, userModel);

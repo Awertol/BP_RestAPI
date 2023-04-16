@@ -7,6 +7,8 @@ namespace BP_RestAPI
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ExamAnswersModel>()
+                .ToTable(tb => tb.HasTrigger("TriggerUsers"));
             modelBuilder.Entity<ClassModel>()
                 .ToTable(tb => tb.HasTrigger("TriggerClasses"));
             modelBuilder.Entity<ExamsModel>()

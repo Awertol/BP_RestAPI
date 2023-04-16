@@ -18,10 +18,10 @@ namespace BP_RestAPI
         {
             return await _dbContext.ExamAnswer.ToListAsync();
         }
-        [HttpGet("/answer/Find/{userID}/{examID}")]
+        [HttpGet("/answer/Find/{examID}")]
         public async Task<ActionResult<IEnumerable<ExamAnswersModel>>> GetAll(int userID, int examID)
         {
-            var answers = _dbContext.ExamAnswer.Where(x => x.UserID == userID && x.ExamID == examID);
+            var answers = _dbContext.ExamAnswer.Where(x => x.ExamID == examID);
             return Ok(answers);
         }
         [HttpPost("/answer/Create/")]
